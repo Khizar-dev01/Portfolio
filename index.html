@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khizar Dev | AI/ML & Full-Stack Developer</title>
+<meta name="description" content="Portfolio of Khizar Wassay (Khizar Dev) — Computer Science undergraduate specializing in AI/ML, Full-Stack Development and SaaS Engineering.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🥷</text></svg>">
+
+<!-- Smart logo loader: tries common filenames before falling back to text -->
+<script>
+function logoFail(img){
+  var tries=['logo.jpg','logo.jpeg','logo.webp','logo.PNG','logo.JPG','logo.JPEG','logo.WEBP'];
+  var n=+(img.dataset.try||0);
+  if(n<tries.length){img.dataset.try=n+1;img.src=tries[n];return;}
+  var box=img.parentElement;
+  var fb=box.querySelector('.logo-fallback');
+  if(fb){img.style.display='none';fb.style.display='flex';}
+  else{box.style.display='none';}
+}
+</script>
+
+<!-- Fonts (Orbitron = closest match to the logo's techno font) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+/* ============ VARIABLES & RESET ============ */
+:root{
+  --bg:#000000;
+  --bg2:#0a0a0d;
+  --card:rgba(255,255,255,.04);
+  --border:rgba(255,255,255,.10);
+  --text:#f1f5f9;
+  --muted:#98a4b3;
+  --primary:#e2e8f0;
+  --secondary:#94a3b8;
+  --accent:#cbd5e1;
+  --grad:linear-gradient(120deg,#f8fafc 0%,#8b98ab 35%,#f8fafc 55%,#7c8899 100%);
+  --radius:18px;
+  --shadow:0 20px 60px rgba(0,0,0,.6);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  line-height:1.7;
+}
+h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif}
+::selection{background:rgba(226,232,240,.35);color:#000}
+::-webkit-scrollbar{width:9px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:linear-gradient(#e2e8f0,#64748b);border-radius:10px}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+img{max-width:100%}
+section{position:relative;padding:110px 24px;scroll-margin-top:60px}
+.container{max-width:1180px;margin:0 auto}
+
+/* Film-grain texture (premium cinematic feel) */
+body::after{content:'';position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* Brand images (logo's black bg blends into the dark theme) */
+.brand-img{mix-blend-mode:screen;filter:drop-shadow(0 0 14px rgba(226,232,240,.22))}
+.logo-fallback{display:none}
+
+/* Mascot icon: full logo inside circles */
+.mascot-crop{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.mascot-crop img{position:static;width:140%;height:140%;object-fit:contain}
+
+/* ============ CANVAS / GLOW BLOBS ============ */
+#bg-particles{position:fixed;inset:0;z-index:0;pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(120px);opacity:.07;pointer-events:none;animation:floatBlob 14s ease-in-out infinite alternate;z-index:0}
+@keyframes floatBlob{from{transform:translate(0,0) scale(1)}to{transform:translate(50px,-40px) scale(1.15)}}
+
+/* ============ SPOTLIGHT (follows mouse) ============ */
+#spotlight{position:fixed;inset:0;pointer-events:none;z-index:1;
+  background:radial-gradient(600px circle at var(--sx,50%) var(--sy,50%),rgba(226,232,240,.055),transparent 55%)}
+
+/* ============ PRELOADER ============ */
+#preloader{position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:26px;transition:opacity .6s ease,visibility .6s}
+#preloader.done{opacity:0;visibility:hidden}
+.loader-wrap{position:relative;width:110px;height:110px;display:flex;align-items:center;justify-content:center}
+.loader-ring{position:absolute;inset:0;border-radius:50%;border:3px solid rgba(255,255,255,.08);border-top-color:#e2e8f0;border-right-color:#64748b;animation:spin 1s linear infinite}
+.loader-mark{width:72px;height:72px;border-radius:50%}
+.loader-name{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;letter-spacing:8px;padding-left:8px;color:#e2e8f0;text-transform:uppercase}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ============ CUSTOM CURSOR ============ */
+.cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:999;border-radius:50%;transform:translate(-50%,-50%)}
+.cursor-dot{width:8px;height:8px;background:#f8fafc;box-shadow:0 0 10px rgba(248,250,252,.8)}
+.cursor-ring{width:38px;height:38px;border:1.5px solid rgba(203,213,225,.55);transition:width .25s,height .25s,border-color .25s}
+.cursor-ring.grow{width:64px;height:64px;border-color:rgba(248,250,252,.9)}
+@media (pointer:coarse){.cursor-dot,.cursor-ring{display:none}}
+
+/* ============ SCROLL PROGRESS ============ */
+#progressBar{position:fixed;top:0;left:0;height:3px;width:0;background:var(--grad);z-index:998;box-shadow:0 0 12px rgba(226,232,240,.7)}
+
+/* ============ NAVBAR ============ */
+nav{position:fixed;top:0;width:100%;z-index:900;transition:all .35s ease;padding:14px 0}
+nav.scrolled{background:rgba(0,0,0,.78);backdrop-filter:blur(16px);padding:9px 0;border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.logo{display:flex;align-items:center;gap:13px}
+.nav-mark{width:54px;height:54px;border-radius:14px;background:rgba(255,255,255,.045);border:1px solid var(--border);transition:box-shadow .3s,transform .3s;flex-shrink:0}
+.nav-mark:hover{box-shadow:0 0 22px rgba(226,232,240,.35);transform:scale(1.04)}
+.logo-text{font-family:'Orbitron',sans-serif;font-size:21px;font-weight:800;letter-spacing:1.5px;background:var(--grad);background-size:250% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s linear infinite;white-space:nowrap}
+.nav-links{display:flex;gap:34px}
+.nav-links a{font-size:14.5px;font-weight:500;color:var(--muted);position:relative;transition:color .3s}
+.nav-links a::after{content:'';position:absolute;left:0;bottom:-6px;width:0;height:2px;background:var(--grad);border-radius:2px;transition:width .3s}
+.nav-links a:hover,.nav-links a.active{color:#fff}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%}
+.nav-cta{font-size:13.5px;font-weight:700;padding:9px 22px;border-radius:30px;background:var(--grad);color:#05070c;transition:transform .3s,box-shadow .3s}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(226,232,240,.35)}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;z-index:950;padding:6px}
+.hamburger span{width:26px;height:2.5px;background:#fff;border-radius:3px;transition:all .35s}
+.hamburger.open span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+
+/* ============ REVEAL ANIMATIONS ============ */
+.reveal{opacity:0;transform:translateY(45px);transition:opacity .85s cubic-bezier(.22,.61,.36,1),transform .85s cubic-bezier(.22,.61,.36,1)}
+.reveal-left{opacity:0;transform:translateX(-60px);transition:opacity .9s ease,transform .9s ease}
+.reveal-right{opacity:0;transform:translateX(60px);transition:opacity .9s ease,transform .9s ease}
+.reveal-zoom{opacity:0;transform:scale(.8);transition:opacity .9s ease,transform .9s cubic-bezier(.34,1.4,.64,1)}
+.in-view{opacity:1 !important;transform:none !important}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+.d4{transition-delay:.4s}.d5{transition-delay:.5s}.d6{transition-delay:.6s}
+
+/* ============ SECTION HEADINGS ============ */
+.section-head{text-align:center;margin-bottom:60px}
+.eyebrow{font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);font-weight:600;display:inline-flex;align-items:center;gap:14px}
+.eyebrow::before,.eyebrow::after{content:'';width:36px;height:1px;background:linear-gradient(90deg,transparent,#94a3b8)}
+.eyebrow::after{background:linear-gradient(90deg,#94a3b8,transparent)}
+.section-head h2{font-size:clamp(28px,4.5vw,44px);font-weight:700;margin:12px 0 18px;line-height:1.25}
+.gradient-text{background:var(--grad);background-size:250% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s linear infinite}
+@keyframes shine{to{background-position:250% center}}
+.head-line{width:70px;height:4px;background:var(--grad);border-radius:4px;margin:0 auto}
+
+/* ============ HERO ============ */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:130px;padding-bottom:40px;z-index:1}
+.hero-inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:40px;width:100%}
+
+/* Cinematic staggered hero entrance */
+.hero-text>*{opacity:0;transform:translateY(26px);animation:heroUp .8s cubic-bezier(.22,.61,.36,1) forwards}
+.hero-text>*:nth-child(1){animation-delay:.15s}
+.hero-text>*:nth-child(2){animation-delay:.28s}
+.hero-text>*:nth-child(3){animation-delay:.41s}
+.hero-text>*:nth-child(4){animation-delay:.54s}
+.hero-text>*:nth-child(5){animation-delay:.67s}
+.hero-text>*:nth-child(6){animation-delay:.8s}
+@keyframes heroUp{to{opacity:1;transform:none}}
+
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;padding:8px 18px;border-radius:30px;border:1px solid var(--border);background:var(--card);color:var(--muted);margin-bottom:22px}
+.hero-badge .dot{width:8px;height:8px;border-radius:50%;background:#34d399;animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(52,211,153,.5)}50%{box-shadow:0 0 0 7px rgba(52,211,153,0)}}
+.hero-name{font-size:clamp(42px,6.5vw,72px);font-weight:700;line-height:1.12;letter-spacing:-1px}
+.hero-name .lastname{background:var(--grad);background-size:250% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 5s linear infinite}
+.hero-role{font-size:clamp(18px,2.6vw,26px);font-weight:600;margin:16px 0 14px;min-height:38px;color:#cbd5e1}
+.hero-role .type{color:#f1f5f9}
+.cursor-bar{color:var(--secondary);animation:blink .8s step-end infinite;font-weight:400}
+@keyframes blink{50%{opacity:0}}
+.hero-desc{color:var(--muted);max-width:540px;font-size:16.5px;margin-bottom:34px}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:36px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 30px;border-radius:14px;font-weight:700;font-size:15px;transition:transform .3s,box-shadow .3s;will-change:transform}
+.btn-primary{position:relative;overflow:hidden;background:var(--grad);background-size:200% auto;color:#05070c;box-shadow:0 10px 30px rgba(226,232,240,.18)}
+.btn-primary:hover{box-shadow:0 16px 44px rgba(226,232,240,.35);background-position:right center}
+/* Light-sweep shine across primary buttons */
+.btn-primary::after{content:'';position:absolute;top:0;left:-130%;width:55%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.8),transparent);
+  transform:skewX(-20deg);transition:left .65s ease}
+.btn-primary:hover::after{left:150%}
+.btn-ghost{border:1px solid var(--border);background:var(--card);color:#fff;backdrop-filter:blur(6px)}
+.btn-ghost:hover{border-color:#e2e8f0;color:#f8fafc}
+.hero-socials{display:flex;gap:14px}
+.hero-socials a{width:44px;height:44px;border-radius:12px;border:1px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;font-size:17px;color:var(--muted);transition:all .3s}
+.hero-socials a:hover{color:#000;border-color:transparent;background:var(--grad);transform:translateY(-4px)}
+
+/* Orbit visual */
+.orbit-zone{display:flex;justify-content:center}
+.orbit-wrap{position:relative;width:min(360px,80vw);aspect-ratio:1}
+.orbit{--dur:18s;position:absolute;border:1px dashed rgba(255,255,255,.16);border-radius:50%;animation:spin var(--dur) linear infinite}
+.orbit-1{inset:0;--radius:min(165px,36vw);--dur:20s}
+.orbit-2{inset:19%;--radius:min(112px,25vw);--dur:13s;animation-direction:reverse}
+.orbit .chip{position:absolute;top:50%;left:50%;width:54px;height:54px;margin:-27px 0 0 -27px;transform:rotate(var(--angle)) translateX(var(--radius)) rotate(calc(var(--angle) * -1))}
+.chip-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:20px;color:#cbd5e1;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:16px;backdrop-filter:blur(8px);animation:spin var(--dur) linear infinite reverse;box-shadow:0 8px 24px rgba(0,0,0,.5);transition:transform .3s,border-color .3s}
+.chip-inner:hover{transform:scale(1.15);border-color:#e2e8f0}
+.orbit-core{position:absolute;top:50%;left:50%;width:min(160px,35vw);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:hidden;background:rgba(255,255,255,.03);border:1px solid rgba(226,232,240,.3);backdrop-filter:blur(6px);box-shadow:0 0 60px rgba(226,232,240,.3),inset 0 0 30px rgba(255,255,255,.05)}
+.orbit-core::before{content:'';position:absolute;inset:-14px;border-radius:50%;border:1px solid rgba(203,213,225,.3);animation:pulseRing 2.6s ease-out infinite;z-index:1;pointer-events:none}
+@keyframes pulseRing{0%{transform:scale(.85);opacity:.9}100%{transform:scale(1.25);opacity:0}}
+.core-mark{width:80%;height:80%;border-radius:50%}
+.core-fallback{font-family:'Orbitron',sans-serif;font-weight:800;font-size:36px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* Hero stats */
+.hero-stats{max-width:980px;margin:70px auto 0;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px 12px;text-align:center;backdrop-filter:blur(8px);transition:transform .3s,border-color .3s}
+.stat:hover{transform:translateY(-6px);border-color:rgba(226,232,240,.5)}
+.stat-num{font-family:'Orbitron',sans-serif;font-size:32px;font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat-label{font-size:12.5px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-top:4px}
+.scroll-hint{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);color:var(--muted);font-size:20px;animation:bob 1.8s infinite}
+@keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,10px)}}
+
+/* ============ ABOUT ============ */
+.about-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
+.profile-card{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:38px;text-align:center;position:relative;overflow:hidden;backdrop-filter:blur(10px)}
+.profile-card::before{content:'';position:absolute;top:-60%;left:-20%;width:140%;height:140%;background:conic-gradient(from 0deg,transparent 60%,rgba(226,232,240,.18),transparent 80%);animation:spin 6s linear infinite}
+.avatar{position:relative;width:120px;height:120px;margin:0 auto 20px;border-radius:50%;overflow:hidden;background:rgba(255,255,255,.04);border:1px solid rgba(226,232,240,.35);box-shadow:0 0 0 6px rgba(255,255,255,.05),0 0 50px rgba(226,232,240,.3);z-index:1;display:flex;align-items:center;justify-content:center}
+.avatar-mark{width:86%;height:86%;border-radius:50%}
+.avatar-fallback{font-family:'Orbitron',sans-serif;font-weight:800;font-size:32px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.profile-card h3{font-size:22px;position:relative;z-index:1}
+.profile-card .role-tag{font-size:13px;color:var(--accent);margin:6px 0 18px;position:relative;z-index:1}
+.profile-info{text-align:left;position:relative;z-index:1;font-size:14px}
+.profile-info li{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px dashed var(--border);color:var(--muted)}
+.profile-info li:last-child{border:none}
+.profile-info i{color:#e2e8f0;width:18px;text-align:center}
+.profile-info a:hover{color:#f8fafc}
+.about-text p{color:var(--muted);margin-bottom:18px;font-size:16px}
+.about-text strong{color:#e2e8f0;font-weight:600}
+.about-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.about-chips span{font-size:13px;padding:8px 16px;border-radius:30px;border:1px solid rgba(226,232,240,.3);background:rgba(255,255,255,.04);color:#cbd5e1;transition:all .3s}
+.about-chips span:hover{background:var(--grad);color:#000;transform:translateY(-3px);border-color:transparent}
+
+/* ============ EDUCATION ============ */
+.timeline{position:relative;max-width:760px;margin:0 auto;padding-left:40px}
+.timeline::before{content:'';position:absolute;left:9px;top:6px;bottom:6px;width:2px;background:linear-gradient(#f8fafc,#94a3b8,#475569)}
+.tl-item{position:relative;margin-bottom:44px}
+.tl-item::before{content:'';position:absolute;left:-40px;top:6px;width:20px;height:20px;border-radius:50%;background:var(--bg);border:3px solid #e2e8f0;box-shadow:0 0 0 5px rgba(226,232,240,.12),0 0 20px rgba(226,232,240,.5)}
+.tl-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;backdrop-filter:blur(8px);transition:transform .3s,border-color .3s}
+.tl-card:hover{transform:translateX(8px);border-color:rgba(226,232,240,.5)}
+.tl-date{display:inline-block;font-size:12px;font-weight:600;letter-spacing:1px;color:#cbd5e1;background:rgba(226,232,240,.08);padding:5px 14px;border-radius:20px;margin-bottom:12px}
+.tl-card h3{font-size:20px;margin-bottom:6px}
+.tl-card h4{font-size:15px;color:#cbd5e1;font-weight:500;margin-bottom:10px}
+.tl-card p{color:var(--muted);font-size:14.5px}
+.coursework{margin-top:14px;display:flex;flex-wrap:wrap;gap:9px}
+.coursework span{font-size:12.5px;padding:6px 14px;border-radius:20px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);transition:all .3s}
+.coursework span:hover{color:#000;background:rgba(226,232,240,.85);border-color:#e2e8f0;transform:translateY(-2px)}
+
+/* ============ SKILLS ============ */
+#skills{background:var(--bg2)}
+.bars-wrap{max-width:820px;margin:0 auto 64px;display:grid;gap:26px}
+.bar-info{display:flex;justify-content:space-between;font-size:14px;font-weight:600;margin-bottom:9px}
+.bar{height:9px;background:rgba(255,255,255,.06);border-radius:10px;overflow:hidden}
+.bar-fill{height:100%;width:0;background:var(--grad);border-radius:10px;transition:width 1.5s cubic-bezier(.22,.61,.36,1);box-shadow:0 0 14px rgba(226,232,240,.5);position:relative}
+.bar-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:shimmer 2.2s infinite}
+@keyframes shimmer{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.skill-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:26px 20px;backdrop-filter:blur(8px);transition:transform .35s,border-color .35s,box-shadow .35s;position:relative;overflow:hidden}
+.skill-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:var(--grad);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.skill-card:hover{transform:translateY(-8px);border-color:rgba(226,232,240,.5);box-shadow:var(--shadow)}
+.skill-card:hover::before{transform:scaleX(1)}
+.skill-icon{width:50px;height:50px;border-radius:14px;background:rgba(226,232,240,.07);border:1px solid rgba(226,232,240,.25);display:flex;align-items:center;justify-content:center;font-size:20px;color:#e2e8f0;margin-bottom:16px}
+.skill-card h3{font-size:16.5px;margin-bottom:14px}
+.tags{display:flex;flex-wrap:wrap;gap:7px}
+.tags span{font-size:11.5px;padding:5px 11px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);transition:all .25s}
+.skill-card:hover .tags span{color:#f1f5f9;border-color:rgba(226,232,240,.35)}
+
+/* ============ PROJECTS ============ */
+.projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.project-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;display:flex;flex-direction:column;position:relative;overflow:hidden;transition:border-color .35s,box-shadow .35s;transform-style:preserve-3d;will-change:transform}
+.project-card::after{content:'';position:absolute;top:-70%;left:-70%;width:200%;height:200%;background:radial-gradient(circle,rgba(226,232,240,.12),transparent 45%);opacity:0;transition:opacity .4s;pointer-events:none}
+/* Metallic gradient border on hover */
+.project-card::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;
+  background:linear-gradient(135deg,rgba(248,250,252,.55),transparent 40%,transparent 60%,rgba(148,163,184,.4));
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask-composite:exclude;
+  opacity:0;transition:opacity .4s;pointer-events:none;z-index:2}
+.project-card:hover{border-color:rgba(226,232,240,.55);box-shadow:0 24px 60px rgba(0,0,0,.65)}
+.project-card:hover::after{opacity:1}
+.project-card:hover::before{opacity:1}
+.project-card.wide{grid-column:span 2}
+.p-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.p-icon{width:48px;height:48px;border-radius:13px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:19px;color:#05070c;box-shadow:0 8px 22px rgba(226,232,240,.22)}
+.p-badge{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:6px 12px;border-radius:20px;background:rgba(226,232,240,.1);border:1px solid rgba(226,232,240,.4);color:#e2e8f0}
+.p-badge.green{background:rgba(52,211,153,.12);border-color:rgba(52,211,153,.4);color:#6ee7b7}
+.project-card h3{font-size:19px;margin-bottom:8px;position:relative;z-index:1}
+.project-card p{font-size:14px;color:var(--muted);margin-bottom:16px;position:relative;z-index:1}
+.p-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px;position:relative;z-index:1}
+.p-tags span{font-size:11px;padding:4px 11px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid rgba(226,232,240,.25);color:#cbd5e1}
+.p-links{margin-top:auto;display:flex;gap:14px;position:relative;z-index:1}
+.p-links a{font-size:13px;font-weight:600;color:var(--muted);display:inline-flex;align-items:center;gap:7px;transition:color .3s}
+.p-links a:hover{color:#f8fafc}
+/* mini forecast chart */
+.mini-chart{display:flex;align-items:flex-end;gap:8px;height:74px;margin:6px 0 18px;position:relative;z-index:1}
+.mini-chart i{flex:1;background:var(--grad);border-radius:6px 6px 0 0;height:0;transition:height 1.2s cubic-bezier(.22,.61,.36,1);opacity:.85;min-width:14px}
+.in-view .mini-chart i{height:var(--h)}
+.cta-card{background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px dashed rgba(226,232,240,.45);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:14px}
+.cta-card h3{font-size:20px}
+.cta-card p{font-size:14px;color:var(--muted)}
+
+/* ============ SOFT SKILLS ============ */
+#softskills{background:var(--bg2)}
+.soft-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.soft-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:30px 26px;text-align:center;transition:all .35s;position:relative;overflow:hidden}
+.soft-card i{font-size:26px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:16px;display:inline-block}
+.soft-card h3{font-size:17px;margin-bottom:10px}
+.soft-card p{font-size:13.5px;color:var(--muted)}
+.soft-card:hover{transform:translateY(-8px) scale(1.02);border-color:rgba(226,232,240,.5);box-shadow:var(--shadow)}
+
+/* ============ MARQUEE ============ */
+.marquee-zone{padding:56px 0;overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:relative;z-index:1}
+.marquee{display:flex;width:max-content;animation:scrollX 26s linear infinite;gap:0}
+.marquee-zone:hover .marquee{animation-play-state:paused}
+.marquee span{font-family:'Space Grotesk';font-size:clamp(22px,3.4vw,34px);font-weight:600;color:rgba(255,255,255,.16);padding:0 26px;white-space:nowrap;transition:color .3s;display:flex;align-items:center;gap:26px}
+.marquee span::after{content:'✦';font-size:16px;color:#94a3b8}
+.marquee span:hover{color:#fff}
+@keyframes scrollX{to{transform:translateX(-50%)}}
+
+/* ============ CONTACT ============ */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.contact-cards{display:grid;gap:18px}
+.c-card{display:flex;align-items:center;gap:18px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;transition:all .3s}
+.c-card:hover{border-color:rgba(226,232,240,.55);transform:translateX(8px)}
+.c-icon{width:50px;height:50px;flex-shrink:0;border-radius:14px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:19px;color:#05070c}
+.c-card h4{font-size:14px;color:var(--muted);font-weight:500}
+.c-card a,.c-card p{font-size:15.5px;font-weight:600;color:var(--text);word-break:break-word}
+.c-card a:hover{color:#f8fafc}
+.contact-socials{display:flex;gap:14px;margin-top:8px;padding-left:4px}
+.contact-socials a{width:48px;height:48px;border-radius:14px;border:1px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;font-size:19px;color:var(--muted);transition:all .3s}
+.contact-socials a:hover{background:var(--grad);color:#000;transform:translateY(-5px);border-color:transparent}
+.form-card{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:34px;backdrop-filter:blur(10px)}
+.form-card h3{font-size:22px;margin-bottom:6px}
+.form-card>p{font-size:14px;color:var(--muted);margin-bottom:24px}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:8px}
+.form-group input,.form-group textarea{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:12px;padding:13px 16px;color:var(--text);font-family:inherit;font-size:14.5px;transition:all .3s;resize:vertical}
+.form-group input:focus,.form-group textarea:focus{outline:none;border-color:#94a3b8;box-shadow:0 0 0 4px rgba(226,232,240,.1)}
+.btn-submit{width:100%;justify-content:center;border:none;cursor:pointer;font-family:inherit}
+.toast{position:fixed;bottom:30px;left:50%;transform:translate(-50%,120px);background:var(--grad);color:#05070c;padding:14px 28px;border-radius:14px;font-size:14px;font-weight:700;z-index:950;transition:transform .45s cubic-bezier(.34,1.4,.64,1);box-shadow:0 14px 40px rgba(226,232,240,.35)}
+.toast.show{transform:translate(-50%,0)}
+
+/* ============ FOOTER ============ */
+footer{border-top:1px solid var(--border);padding:38px 24px;text-align:center;position:relative;z-index:1}
+.footer-brand{display:flex;align-items:center;justify-content:center;gap:13px;margin-bottom:14px}
+.footer-mark{width:48px;height:48px;border-radius:13px;background:rgba(255,255,255,.045);border:1px solid var(--border)}
+.footer-name{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:800;letter-spacing:1.5px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+footer p{color:var(--muted);font-size:14px}
+footer .heart{color:#f43f5e;display:inline-block;animation:heartbeat 1.4s infinite}
+@keyframes heartbeat{0%,100%{transform:scale(1)}25%{transform:scale(1.25)}}
+
+/* ============ BACK TO TOP ============ */
+#toTop{position:fixed;bottom:28px;right:28px;width:50px;height:50px;border-radius:14px;border:none;background:var(--grad);color:#05070c;font-size:17px;cursor:pointer;opacity:0;visibility:hidden;transform:translateY(20px);transition:all .4s;z-index:900;box-shadow:0 10px 30px rgba(226,232,240,.3)}
+#toTop.show{opacity:1;visibility:visible;transform:translateY(0)}
+#toTop:hover{transform:translateY(-5px)}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:1024px){
+  .skills-grid{grid-template-columns:repeat(2,1fr)}
+  .projects-grid{grid-template-columns:repeat(2,1fr)}
+  .project-card.wide{grid-column:span 2}
+  .hero-inner{grid-template-columns:1fr;text-align:center;gap:60px}
+  .hero-desc{margin:0 auto 34px}
+  .hero-btns,.hero-socials{justify-content:center}
+  .orbit-zone{order:-1}
+  .about-grid{grid-template-columns:1fr;gap:44px}
+  .contact-grid{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  section{padding:90px 20px}
+  .nav-cta{display:none}
+  .hamburger{display:flex}
+  .nav-mark{width:42px;height:42px;border-radius:11px}
+  .logo-text{font-size:17px;letter-spacing:1px}
+  .nav-links{position:fixed;top:0;right:-100%;height:100vh;width:min(300px,78vw);background:rgba(5,5,8,.97);backdrop-filter:blur(20px);flex-direction:column;justify-content:center;align-items:center;gap:34px;transition:right .45s cubic-bezier(.22,.61,.36,1);border-left:1px solid var(--border)}
+  .nav-links.open{right:0}
+  .nav-links a{font-size:19px}
+  .hero-stats{grid-template-columns:repeat(2,1fr)}
+  .skills-grid{grid-template-columns:1fr}
+  .projects-grid{grid-template-columns:1fr}
+  .project-card.wide{grid-column:span 1}
+  .soft-grid{grid-template-columns:1fr}
+  .mini-chart{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+  .reveal,.reveal-left,.reveal-right,.reveal-zoom{opacity:1;transform:none}
+  .hero-text>*{animation:none;opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- Preloader: ninja mascot inside the spinner ring -->
+<div id="preloader">
+  <div class="loader-wrap">
+    <div class="loader-ring"></div>
+    <span class="mascot-crop loader-mark">
+      <img src="logo.png" alt="Khizar Dev" class="brand-img" onerror="logoFail(this)">
+    </span>
+  </div>
+  <div class="loader-name">Khizar Dev</div>
+</div>
+
+<!-- Background & cursor & spotlight -->
+<canvas id="bg-particles"></canvas>
+<div class="cursor-dot"></div>
+<div class="cursor-ring"></div>
+<div id="progressBar"></div>
+<div id="spotlight"></div>
+
+<!-- Navbar: mascot icon + "Khizar Dev" in the logo-style font -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#home" class="logo" aria-label="Khizar Dev — Home">
+      <span class="mascot-crop nav-mark">
+        <img src="logo.png" alt="Khizar Dev mascot" class="brand-img" onerror="logoFail(this)">
+      </span>
+      <span class="logo-text">Khizar&nbsp;Dev</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home" class="active">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Hire Me</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header id="home" class="hero">
+  <div class="blob" style="width:480px;height:480px;background:#cbd5e1;top:-120px;left:-120px"></div>
+  <div class="blob" style="width:420px;height:420px;background:#94a3b8;bottom:-100px;right:-80px;animation-delay:-6s"></div>
+
+  <div class="hero-inner">
+    <div class="hero-text">
+      <span class="hero-badge"><span class="dot"></span> Available for opportunities</span>
+      <h1 class="hero-name">Hi, I'm Khizar<br><span class="lastname">Wassay</span></h1>
+      <div class="hero-role">I'm a <span class="type" id="typewriter"></span><span class="cursor-bar">|</span></div>
+      <p class="hero-desc">Final-year Computer Science undergraduate building <strong>AI-powered systems</strong>, full-stack web applications and scalable <strong>SaaS platforms</strong> that solve real-world problems.</p>
+      <div class="hero-btns">
+        <a href="#projects" class="btn btn-primary magnetic">View My Work <i class="fa-solid fa-arrow-right"></i></a>
+        <a href="#contact" class="btn btn-ghost magnetic">Get In Touch <i class="fa-regular fa-paper-plane"></i></a>
+        <a href="Khizar-Wassay-Resume.pdf" download class="btn btn-ghost magnetic">Download CV <i class="fa-solid fa-download"></i></a>
+      </div>
+      <div class="hero-socials">
+        <a href="https://github.com/Khizar-dev01" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/khizar-wassay-2b4b6135a" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="mailto:khizarwassay@gmail.com" aria-label="Email"><i class="fa-regular fa-envelope"></i></a>
+        <a href="tel:+923251515226" aria-label="Phone"><i class="fa-solid fa-phone"></i></a>
+      </div>
+    </div>
+
+    <div class="orbit-zone">
+      <div class="orbit-wrap reveal-zoom in-view">
+        <div class="orbit orbit-1">
+          <div class="chip" style="--angle:0deg"><div class="chip-inner"><i class="fa-brands fa-python" style="color:#e2e8f0"></i></div></div>
+          <div class="chip" style="--angle:120deg"><div class="chip-inner"><i class="fa-solid fa-robot" style="color:#f8fafc"></i></div></div>
+          <div class="chip" style="--angle:240deg"><div class="chip-inner"><i class="fa-solid fa-database" style="color:#94a3b8"></i></div></div>
+        </div>
+        <div class="orbit orbit-2">
+          <div class="chip" style="--angle:60deg"><div class="chip-inner"><i class="fa-brands fa-react" style="color:#cbd5e1"></i></div></div>
+          <div class="chip" style="--angle:180deg"><div class="chip-inner"><i class="fa-solid fa-cloud" style="color:#e2e8f0"></i></div></div>
+          <div class="chip" style="--angle:300deg"><div class="chip-inner"><i class="fa-solid fa-chart-line" style="color:#f1f5f9"></i></div></div>
+        </div>
+        <div class="orbit-core">
+          <span class="mascot-crop core-mark">
+            <img src="logo.png" alt="Khizar Dev" class="brand-img" onerror="logoFail(this)">
+            <span class="logo-fallback core-fallback">K</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat reveal d1"><div class="stat-num" data-count="6" data-suffix="+">0</div><div class="stat-label">Projects Built</div></div>
+    <div class="stat reveal d2"><div class="stat-num" data-count="20" data-suffix="+">0</div><div class="stat-label">Technologies</div></div>
+    <div class="stat reveal d3"><div class="stat-num" data-count="73" data-suffix="%">0</div><div class="stat-label">ML Model R² Score</div></div>
+    <div class="stat reveal d4"><div class="stat-num" data-count="2026" data-suffix="">0</div><div class="stat-label">CS Graduate (Expected)</div></div>
+  </div>
+  <a href="#about" class="scroll-hint"><i class="fa-solid fa-chevron-down"></i></a>
+</header>
+
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">01 · Who I Am</span>
+      <h2>Turning Ideas Into <span class="gradient-text">Intelligent Products</span></h2>
+      <div class="head-line"></div>
+    </div>
+    <div class="about-grid">
+      <div class="profile-card reveal-left">
+        <div class="avatar">
+          <span class="mascot-crop avatar-mark">
+            <img src="logo.png" alt="Khizar Dev" class="brand-img" onerror="logoFail(this)">
+            <span class="logo-fallback avatar-fallback">K</span>
+          </span>
+        </div>
+        <h3>Khizar Wassay</h3>
+        <p class="role-tag">AI/ML Enthusiast • Full-Stack & SaaS Developer</p>
+        <ul class="profile-info">
+          <li><i class="fa-solid fa-graduation-cap"></i> BS Computer Science — PMAS-Arid Agriculture University</li>
+          <li><i class="fa-solid fa-location-dot"></i> Rawalpindi, Pakistan</li>
+          <li><i class="fa-regular fa-envelope"></i> <a href="mailto:khizarwassay@gmail.com">khizarwassay@gmail.com</a></li>
+          <li><i class="fa-solid fa-phone"></i> <a href="tel:+923251515226">+92 325 1515226</a></li>
+        </ul>
+      </div>
+      <div class="about-text reveal-right">
+        <p>Hello! I'm a final-year <strong>Computer Science undergraduate</strong> with a strong passion for <strong>Artificial Intelligence, Machine Learning, Data Science, Full-Stack Development and SaaS Engineering</strong>.</p>
+        <p>I've built an <strong>AI-powered Smart Stock Management & Demand Forecasting System</strong> using machine learning, along with full-stack SaaS products including <strong>LaunchPad</strong> (a production-ready SaaS boilerplate) and <strong>Pakistan Business OS</strong> — a multi-tenant business management platform designed for local SMEs.</p>
+        <p>I love learning emerging technologies, solving real-world problems, and building <strong>practical, scalable, data-driven software</strong>. Strong communicator with professional English skills and a builder's mindset.</p>
+        <div class="about-chips">
+          <span>🤖 AI / ML</span><span>📊 Data Science</span><span>🌐 Full-Stack</span>
+          <span>☁️ SaaS Engineering</span><span>🔮 Predictive Analytics</span><span>⚙️ Business Automation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EDUCATION ============ -->
+<section id="education">
+  <div class="blob" style="width:380px;height:380px;background:#e2e8f0;top:20%;right:-140px"></div>
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">02 · My Journey</span>
+      <h2>Education & <span class="gradient-text">Coursework</span></h2>
+      <div class="head-line"></div>
+    </div>
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <div class="tl-card">
+          <span class="tl-date">2022 — PRESENT · EXPECTED 2026</span>
+          <h3>Bachelor of Science in Computer Science</h3>
+          <h4><i class="fa-solid fa-building-columns"></i> PMAS-Arid Agriculture University, Rawalpindi</h4>
+          <p>Final-year undergraduate focusing on AI, software engineering, databases and networks — combining strong theory with hands-on project development.</p>
+          <div class="coursework">
+            <span>Artificial Intelligence</span><span>Data Structures & Algorithms</span><span>Database Management Systems</span>
+            <span>Computer Networks</span><span>Software Engineering</span><span>Information Security</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SKILLS ============ -->
+<section id="skills">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">03 · My Toolbox</span>
+      <h2>Technical <span class="gradient-text">Skills</span></h2>
+      <div class="head-line"></div>
+    </div>
+
+    <div class="bars-wrap">
+      <div class="bar-row reveal"><div class="bar-info"><span><i class="fa-brands fa-python" style="color:#e2e8f0"></i> Python & Machine Learning</span></div><div class="bar"><div class="bar-fill" data-width="90"></div></div></div>
+      <div class="bar-row reveal d1"><div class="bar-info"><span><i class="fa-solid fa-diagram-project" style="color:#cbd5e1"></i> Full-Stack Web (React · Next.js · Django · Flask)</span></div><div class="bar"><div class="bar-fill" data-width="85"></div></div></div>
+      <div class="bar-row reveal d2"><div class="bar-info"><span><i class="fa-solid fa-chart-simple" style="color:#94a3b8"></i> Data Science (Pandas · NumPy · Scikit-Learn)</span></div><div class="bar"><div class="bar-fill" data-width="85"></div></div></div>
+      <div class="bar-row reveal d3"><div class="bar-info"><span><i class="fa-solid fa-database" style="color:#f1f5f9"></i> SQL & Databases (PostgreSQL · Prisma · MySQL)</span></div><div class="bar"><div class="bar-fill" data-width="82"></div></div></div>
+      <div class="bar-row reveal d4"><div class="bar-info"><span><i class="fa-solid fa-cloud" style="color:#cbd5e1"></i> SaaS & Deployment (Stripe · Auth · RBAC · Vercel)</span></div><div class="bar"><div class="bar-fill" data-width="78"></div></div></div>
+    </div>
+
+    <div class="skills-grid">
+      <div class="skill-card reveal"><div class="skill-icon"><i class="fa-solid fa-code"></i></div><h3>Programming Languages</h3><div class="tags"><span>Python</span><span>SQL</span><span>JavaScript</span><span>C++</span></div></div>
+      <div class="skill-card reveal d1"><div class="skill-icon"><i class="fa-solid fa-brain"></i></div><h3>AI / Machine Learning</h3><div class="tags"><span>Scikit-Learn</span><span>Feature Engineering</span><span>Predictive Analytics</span><span>Regression</span><span>Demand Forecasting</span><span>Model Evaluation</span></div></div>
+      <div class="skill-card reveal d2"><div class="skill-icon"><i class="fa-solid fa-chart-line"></i></div><h3>Data Science</h3><div class="tags"><span>Pandas</span><span>NumPy</span><span>Matplotlib</span><span>Jupyter</span><span>Data Analysis</span></div></div>
+      <div class="skill-card reveal d3"><div class="skill-icon"><i class="fa-solid fa-palette"></i></div><h3>Frontend Development</h3><div class="tags"><span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>React</span><span>Next.js</span><span>Tailwind CSS</span></div></div>
+      <div class="skill-card reveal d1"><div class="skill-icon"><i class="fa-solid fa-server"></i></div><h3>Backend Development</h3><div class="tags"><span>Flask</span><span>Django</span><span>DRF</span><span>REST APIs</span><span>Python</span></div></div>
+      <div class="skill-card reveal d2"><div class="skill-icon"><i class="fa-solid fa-database"></i></div><h3>Databases</h3><div class="tags"><span>PostgreSQL</span><span>SQLite</span><span>MySQL</span><span>Prisma</span></div></div>
+      <div class="skill-card reveal d3"><div class="skill-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div><h3>SaaS & Development</h3><div class="tags"><span>Multi-Tenant Architecture</span><span>Authentication</span><span>RBAC</span><span>Stripe</span><span>Git & GitHub</span><span>Vercel</span></div></div>
+      <div class="skill-card reveal d4"><div class="skill-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div><h3>Development Tools</h3><div class="tags"><span>VS Code</span><span>Jupyter Notebook</span><span>Cisco Packet Tracer</span><span>Responsive Design</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROJECTS ============ -->
+<section id="projects">
+  <div class="blob" style="width:420px;height:420px;background:#cbd5e1;top:10%;left:-160px"></div>
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">04 · What I've Built</span>
+      <h2>Featured <span class="gradient-text">Projects</span></h2>
+      <div class="head-line"></div>
+    </div>
+
+    <div class="projects-grid">
+
+      <div class="project-card wide tilt reveal">
+        <div class="p-top">
+          <div class="p-icon"><i class="fa-solid fa-brain"></i></div>
+          <span class="p-badge">⭐ Final Year Project</span>
+        </div>
+        <h3>Smart Stock Management & Demand Forecasting System</h3>
+        <p>Web-based inventory management system powered by ML demand forecasting. Built a <strong style="color:#f1f5f9">HistGradientBoostingRegressor</strong> on the Rossmann dataset achieving <strong style="color:#f1f5f9">~73% R² score</strong>, with lag features & rolling averages, inventory/sales tracking and a Flask backend serving live predictions.</p>
+        <div class="mini-chart">
+          <i style="--h:35%"></i><i style="--h:55%"></i><i style="--h:42%"></i><i style="--h:70%"></i><i style="--h:60%"></i><i style="--h:88%"></i><i style="--h:76%"></i><i style="--h:95%"></i>
+        </div>
+        <div class="p-tags"><span>Python</span><span>Flask</span><span>SQLite</span><span>Scikit-Learn</span><span>Machine Learning</span><span>JavaScript</span></div>
+        <div class="p-links"><a href="https://github.com/Khizar-dev01" target="_blank"><i class="fa-brands fa-github"></i> View Code</a></div>
+      </div>
+
+      <div class="project-card tilt reveal d1">
+        <div class="p-top">
+          <div class="p-icon"><i class="fa-solid fa-rocket"></i></div>
+          <span class="p-badge green">SaaS</span>
+        </div>
+        <h3>LaunchPad — SaaS Boilerplate</h3>
+        <p>Production-ready SaaS starter: Next.js App Router + TypeScript, authentication, dashboards, Stripe billing with server-side plan validation, Prisma database and Vercel deployment.</p>
+        <div class="p-tags"><span>Next.js</span><span>TypeScript</span><span>Prisma</span><span>Stripe</span><span>Vercel</span></div>
+        <div class="p-links"><a href="https://github.com/Khizar-dev01" target="_blank"><i class="fa-brands fa-github"></i> View Code</a></div>
+      </div>
+
+      <div class="project-card tilt reveal">
+        <div class="p-top">
+          <div class="p-icon"><i class="fa-solid fa-store"></i></div>
+          <span class="p-badge green">Multi-Tenant SaaS</span>
+        </div>
+        <h3>Pakistan Business OS</h3>
+        <p>Multi-tenant business platform for Pakistani SMEs — products, inventory, sales & finances with RBAC (Owner, Manager, Cashier…). Built around PKR, JazzCash, Easypaisa and Udhaar management.</p>
+        <div class="p-tags"><span>Django</span><span>DRF</span><span>PostgreSQL</span><span>Database Design</span></div>
+        <div class="p-links"><a href="https://github.com/Khizar-dev01" target="_blank"><i class="fa-brands fa-github"></i> View Code</a></div>
+      </div>
+
+      <div class="project-card wide tilt reveal d1">
+        <div class="p-top">
+          <div class="p-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+          <span class="p-badge">Commercial Product</span>
+        </div>
+        <h3>Nexora — Premium Modern Web UI Template</h3>
+        <p>A premium, commercial-ready frontend template for SaaS, startup and business websites. Reusable UI components, responsive layouts, modern animations and interactive sections — optimized production build with Vite, prepared for online distribution.</p>
+        <div class="p-tags"><span>React</span><span>Vite</span><span>JavaScript</span><span>HTML</span><span>CSS</span></div>
+        <div class="p-links"><a href="https://github.com/Khizar-dev01" target="_blank"><i class="fa-brands fa-github"></i> View Code</a></div>
+      </div>
+
+      <div class="project-card tilt reveal">
+        <div class="p-top">
+          <div class="p-icon"><i class="fa-solid fa-ticket"></i></div>
+        </div>
+        <h3>Movie Ticket Management System</h3>
+        <p>Relational database system for movie scheduling & ticketing — normalized schema, relationships across movies, schedules, customers and tickets, with efficient SQL queries and reporting.</p>
+        <div class="p-tags"><span>SQL</span><span>RDBMS</span><span>Normalization</span></div>
+        <div class="p-links"><a href="https://github.com/Khizar-dev01" target="_blank"><i class="fa-brands fa-github"></i> View Code</a></div>
+      </div>
+
+      <div class="project-card tilt reveal d1">
+        <div class="p-top">
+          <div class="p-icon"><i class="fa-solid fa-network-wired"></i></div>
+        </div>
+        <h3>Computer Networking Simulation</h3>
+        <p>Designed & simulated a LAN in Cisco Packet Tracer — IP addressing, subnetting, routing, plus network testing and troubleshooting for reliable communication.</p>
+        <div class="p-tags"><span>Cisco Packet Tracer</span><span>Subnetting</span><span>Routing</span></div>
+        <div class="p-links"><a href="https://github.com/Khizar-dev01" target="_blank"><i class="fa-brands fa-github"></i> View Code</a></div>
+      </div>
+
+      <div class="project-card cta-card reveal d2">
+        <h3>Want to see more?</h3>
+        <p>More experiments, coursework builds and upcoming AI projects live on my GitHub.</p>
+        <a href="https://github.com/Khizar-dev01" target="_blank" class="btn btn-primary magnetic"><i class="fa-brands fa-github"></i> Explore GitHub</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ SOFT SKILLS ============ -->
+<section id="softskills">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">05 · Beyond Code</span>
+      <h2>Communication & <span class="gradient-text">Soft Skills</span></h2>
+      <div class="head-line"></div>
+    </div>
+    <div class="soft-grid">
+      <div class="soft-card reveal"><i class="fa-solid fa-comments"></i><h3>English Communication</h3><p>Strong written & verbal communication with professional email and phone etiquette.</p></div>
+      <div class="soft-card reveal d1"><i class="fa-solid fa-handshake"></i><h3>Client Interaction</h3><p>Clear, polite and confident communication with clients, colleagues and teams.</p></div>
+      <div class="soft-card reveal d2"><i class="fa-solid fa-magnifying-glass"></i><h3>Attention to Detail</h3><p>Careful, accurate handling of data, documentation and technical tasks.</p></div>
+      <div class="soft-card reveal d1"><i class="fa-solid fa-lightbulb"></i><h3>Problem Solving</h3><p>Analyzing problems, researching solutions and implementing practical approaches.</p></div>
+      <div class="soft-card reveal d2"><i class="fa-solid fa-clock"></i><h3>Time Management</h3><p>Prioritizing tasks, juggling responsibilities and consistently meeting deadlines.</p></div>
+      <div class="soft-card reveal d3"><i class="fa-solid fa-people-group"></i><h3>Teamwork & Adaptability</h3><p>Collaborative team player, always eager to learn new tools and technologies.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOCUS MARQUEE ============ -->
+<div class="marquee-zone">
+  <div class="marquee" id="marquee">
+    <span>Artificial Intelligence</span><span>Machine Learning</span><span>AI Engineering</span><span>Data Science & Analytics</span><span>Predictive Modeling</span><span>Full-Stack Development</span><span>SaaS Engineering</span><span>Business Automation</span><span>Software Development</span><span>Emerging AI Technologies</span>
+  </div>
+</div>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact">
+  <div class="blob" style="width:400px;height:400px;background:#94a3b8;bottom:-120px;left:-120px"></div>
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">06 · Let's Talk</span>
+      <h2>Get In <span class="gradient-text">Touch</span></h2>
+      <div class="head-line"></div>
+    </div>
+    <div class="contact-grid">
+      <div class="reveal-left">
+        <div class="contact-cards">
+          <div class="c-card"><div class="c-icon"><i class="fa-regular fa-envelope"></i></div><div><h4>Email</h4><a href="mailto:khizarwassay@gmail.com">khizarwassay@gmail.com</a></div></div>
+          <div class="c-card"><div class="c-icon"><i class="fa-solid fa-phone"></i></div><div><h4>Phone</h4><a href="tel:+923251515226">+92 325 1515226</a></div></div>
+          <div class="c-card"><div class="c-icon"><i class="fa-solid fa-location-dot"></i></div><div><h4>Location</h4><p>Rawalpindi, Pakistan</p></div></div>
+        </div>
+        <div class="contact-socials">
+          <a href="https://github.com/Khizar-dev01" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+          <a href="https://www.linkedin.com/in/khizar-wassay-2b4b6135a" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="mailto:khizarwassay@gmail.com" aria-label="Email"><i class="fa-regular fa-envelope"></i></a>
+          <a href="tel:+923251515226" aria-label="Phone"><i class="fa-solid fa-phone"></i></a>
+        </div>
+      </div>
+      <div class="form-card reveal-right">
+        <h3>Send a Message</h3>
+        <p>Have a project or opportunity in mind? Fill this in — it opens straight in your email app.</p>
+        <form id="contactForm">
+          <div class="form-group"><label>Your Name</label><input type="text" id="cName" placeholder="John Doe" required></div>
+          <div class="form-group"><label>Your Email</label><input type="email" id="cEmail" placeholder="john@example.com" required></div>
+          <div class="form-group"><label>Message</label><textarea id="cMsg" rows="4" placeholder="Tell me about your project..." required></textarea></div>
+          <button type="submit" class="btn btn-primary btn-submit magnetic"><i class="fa-regular fa-paper-plane"></i> Send Message</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">
+    <span class="mascot-crop footer-mark">
+      <img src="logo.png" alt="Khizar Dev" class="brand-img" onerror="logoFail(this)">
+    </span>
+    <span class="footer-name">Khizar&nbsp;Dev</span>
+  </div>
+  <p>© <span id="year"></span> Khizar Wassay — Designed & built with <span class="heart">❤</span> and lots of coffee.</p>
+</footer>
+
+<button id="toTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
+<div class="toast" id="toast">✉️ Opening your email app...</div>
+
+<script>
+/* ================= PRELOADER ================= */
+window.addEventListener('load', () => {
+  setTimeout(() => document.getElementById('preloader').classList.add('done'), 500);
+});
+
+/* ================= PARTICLES ================= */
+const canvas = document.getElementById('bg-particles');
+const ctx = canvas.getContext('2d');
+let particles = [], W, H;
+const mouse = { x: null, y: null };
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function initParticles() {
+  W = canvas.width = innerWidth;
+  H = canvas.height = innerHeight;
+  const count = Math.min(90, Math.floor(W * H / 16000));
+  particles = Array.from({ length: count }, () => ({
+    x: Math.random() * W, y: Math.random() * H,
+    vx: (Math.random() - .5) * .5, vy: (Math.random() - .5) * .5,
+    r: Math.random() * 1.8 + .6
+  }));
+}
+function drawParticles() {
+  ctx.clearRect(0, 0, W, H);
+  for (const p of particles) {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0 || p.x > W) p.vx *= -1;
+    if (p.y < 0 || p.y > H) p.vy *= -1;
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(226,232,240,.5)'; ctx.fill();
+  }
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const a = particles[i], b = particles[j];
+      const d = Math.hypot(a.x - b.x, a.y - b.y);
+      if (d < 130) {
+        ctx.strokeStyle = `rgba(203,213,225,${(1 - d / 130) * .15})`;
+        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+      }
+    }
+    if (mouse.x !== null) {
+      const p = particles[i];
+      const d = Math.hypot(p.x - mouse.x, p.y - mouse.y);
+      if (d < 180) {
+        ctx.strokeStyle = `rgba(248,250,252,${(1 - d / 180) * .3})`;
+        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(drawParticles);
+}
+if (!reduceMotion) {
+  initParticles(); drawParticles();
+  addEventListener('resize', initParticles);
+  addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+}
+
+/* ================= SPOTLIGHT (follows mouse) ================= */
+addEventListener('mousemove', e => {
+  const s = document.getElementById('spotlight');
+  s.style.setProperty('--sx', e.clientX + 'px');
+  s.style.setProperty('--sy', e.clientY + 'px');
+});
+
+/* ================= TYPEWRITER ================= */
+const roles = ["AI & ML Enthusiast", "Full-Stack Developer", "SaaS Engineer", "Data Science Explorer", "Problem Solver"];
+let ri = 0, ci = 0, deleting = false;
+const typeEl = document.getElementById('typewriter');
+(function typeLoop() {
+  const word = roles[ri];
+  typeEl.textContent = word.slice(0, ci);
+  if (!deleting) {
+    if (ci++ === word.length) { deleting = true; return setTimeout(typeLoop, 1700); }
+    setTimeout(typeLoop, 75);
+  } else {
+    if (ci-- === 0) { deleting = false; ri = (ri + 1) % roles.length; return setTimeout(typeLoop, 350); }
+    setTimeout(typeLoop, 35);
+  }
+})();
+
+/* ================= HERO ENTRANCE CLEANUP (so magnetic buttons keep working) ================= */
+document.querySelectorAll('.hero-text > *').forEach(el => {
+  el.addEventListener('animationend', () => {
+    el.style.animation = 'none';
+    el.style.opacity = '1';
+    el.style.transform = 'none';
+  }, { once: true });
+});
+
+/* ================= SCROLL REVEALS ================= */
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in-view'); revealObserver.unobserve(e.target); }
+  });
+}, { threshold: .12 });
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-zoom').forEach(el => revealObserver.observe(el));
+
+/* ================= COUNTERS ================= */
+const counterObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target, target = +el.dataset.count, suffix = el.dataset.suffix || '';
+    const start = performance.now(), dur = 1800;
+    (function step(now) {
+      const p = Math.min((now - start) / dur, 1);
+      el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))) + suffix;
+      if (p < 1) requestAnimationFrame(step);
+    })(start);
+    counterObserver.unobserve(el);
+  });
+}, { threshold: .5 });
+document.querySelectorAll('.stat-num').forEach(el => counterObserver.observe(el));
+
+/* ================= SKILL BARS ================= */
+const barObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.width = e.target.dataset.width + '%';
+      barObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: .4 });
+document.querySelectorAll('.bar-fill').forEach(el => barObserver.observe(el));
+
+/* ================= 3D TILT CARDS ================= */
+document.querySelectorAll('.tilt').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - .5;
+    const y = (e.clientY - r.top) / r.height - .5;
+    card.style.transform = `perspective(900px) rotateY(${x * 7}deg) rotateX(${-y * 7}deg) translateY(-6px)`;
+  });
+  card.addEventListener('mouseleave', () => card.style.transform = '');
+});
+
+/* ================= MAGNETIC BUTTONS ================= */
+document.querySelectorAll('.magnetic').forEach(btn => {
+  btn.addEventListener('mousemove', e => {
+    const r = btn.getBoundingClientRect();
+    btn.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .22}px, ${(e.clientY - r.top - r.height / 2) * .28}px)`;
+  });
+  btn.addEventListener('mouseleave', () => btn.style.transform = '');
+});
+
+/* ================= CUSTOM CURSOR ================= */
+const dot = document.querySelector('.cursor-dot'), ring = document.querySelector('.cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+});
+(function ringLoop() {
+  rx += (mx - rx) * .15; ry += (my - ry) * .15;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  requestAnimationFrame(ringLoop);
+})();
+document.querySelectorAll('a,button,.tilt,.chip-inner').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('grow'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('grow'));
+});
+
+/* ================= NAVBAR / PROGRESS / TO-TOP ================= */
+const nav = document.getElementById('navbar'), toTop = document.getElementById('toTop'), progress = document.getElementById('progressBar');
+const navLinkEls = document.querySelectorAll('.nav-links a');
+addEventListener('scroll', () => {
+  const y = scrollY;
+  nav.classList.toggle('scrolled', y > 40);
+  toTop.classList.toggle('show', y > 500);
+  progress.style.width = (y / (document.documentElement.scrollHeight - innerHeight)) * 100 + '%';
+  navLinkEls.forEach(link => {
+    const sec = document.querySelector(link.getAttribute('href'));
+    if (sec) {
+      const top = sec.offsetTop - 130;
+      link.classList.toggle('active', y >= top && y < top + sec.offsetHeight);
+    }
+  });
+});
+toTop.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+
+/* ================= MOBILE MENU ================= */
+const hamburger = document.getElementById('hamburger'), navLinks = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  navLinks.classList.toggle('open');
+});
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  hamburger.classList.remove('open'); navLinks.classList.remove('open');
+}));
+
+/* ================= MARQUEE (duplicate for seamless loop) ================= */
+const marquee = document.getElementById('marquee');
+marquee.innerHTML += marquee.innerHTML;
+
+/* ================= CONTACT FORM (mailto) ================= */
+const toast = document.getElementById('toast');
+document.getElementById('contactForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = cName.value, email = cEmail.value, msg = cMsg.value;
+  const subject = encodeURIComponent(`Portfolio Contact — ${name}`);
+  const body = encodeURIComponent(`Hi Khizar,\n\n${msg}\n\n— ${name} (${email})`);
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2600);
+  setTimeout(() => { location.href = `mailto:khizarwassay@gmail.com?subject=${subject}&body=${body}`; }, 700);
+});
+
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
